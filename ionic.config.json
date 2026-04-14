@@ -1,0 +1,7 @@
+{
+  "name": "lets-do-it",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
