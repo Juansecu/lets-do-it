@@ -51,6 +51,9 @@
         <ion-card-header>
           <ion-card-title>{{ task.name }}</ion-card-title>
           <ion-card-subtitle>ID: {{ task.taskId }}</ion-card-subtitle>
+          @if (task.isCompleted) {
+            <ion-badge color="success" class="ion-margin-top">Completado</ion-badge>
+          }
         </ion-card-header>
 
         <ion-card-content>
