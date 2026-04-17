@@ -1,0 +1,26 @@
+<form (ngSubmit)="onSaveCategory()">
+  <ion-item>
+    <ion-label position="floating">Nombre de la Categoría</ion-label>
+    <ion-input
+      [(ngModel)]="categoryName"
+      name="categoryName"
+      placeholder="Ej. Trabajo, Compras..."
+      [required]="true"
+    ></ion-input>
+  </ion-item>
+
+  @if (errorMessage) {
+    <ion-text color="danger">
+      <p class="ion-padding-start ion-padding-top">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{ errorMessage }}
+      </p>
+    </ion-text>
+  }
+
+  <div class="ion-margin-top">
+    <ion-button expand="block" type="submit" [disabled]="!categoryName">
+      {{ shouldCreateNewCategory() ? 'Crear Categoría' : 'Modificar Categoría' }}
+    </ion-button>
+  </div>
+</form>

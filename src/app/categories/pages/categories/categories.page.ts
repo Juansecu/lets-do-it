@@ -25,7 +25,7 @@ import {
   InfiniteScrollCustomEvent
 } from '@ionic/angular/standalone';
 import {addIcons} from "ionicons";
-import {add, trash, folderOutline, alertCircleOutline} from "ionicons/icons";
+import {add, pencil, trash, folderOutline, alertCircleOutline} from "ionicons/icons";
 
 import {CategoryEntity} from "../../entities";
 
@@ -47,7 +47,7 @@ export default class CategoriesPage {
   canLoadMore: boolean = true;
 
   constructor() {
-    addIcons({ add, trash, folderOutline, alertCircleOutline })
+    addIcons({ add, pencil, trash, folderOutline, alertCircleOutline })
   }
 
   ionViewDidEnter() {

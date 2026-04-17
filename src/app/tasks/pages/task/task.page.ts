@@ -69,10 +69,11 @@ export default class TaskPage implements OnInit {
     addIcons({ folderOutline, timeOutline, alertCircleOutline });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     const taskId = this._ACTIVATED_ROUTE.snapshot.paramMap.get('taskId');
+
     if (taskId) {
-      await this.loadTask(parseInt(taskId));
+      this.loadTask(Number.parseInt(taskId)).then().catch(console.error);
     } else {
       this.errorMessage = 'No se ha encontrado el ID de la tarea.';
       this.isLoading = false;

@@ -77,6 +77,16 @@
 
           <ion-item-options side="end">
             <ion-item-option
+              color="secondary"
+              [routerLink]="`/categories/${category.categoryId}`"
+            >
+              <ion-icon
+                name="pencil"
+                slot="icon-only"
+                style="color: white"
+              ></ion-icon>
+            </ion-item-option>
+            <ion-item-option
               color="danger"
               (click)="deleteCategory(category)"
               (keydown.enter)="deleteCategory(category)"

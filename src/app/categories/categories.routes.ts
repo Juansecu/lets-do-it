@@ -7,8 +7,12 @@ const routes: Routes = [
   },
   {
     path: 'create-category',
-    loadComponent: () => import('./pages/create-category/create-category.page')
+    loadComponent: () => import('./pages/save-category/./save-category.page')
   },
+  {
+    path: ':categoryId',
+    loadComponent: () => import('./pages/save-category/save-category.page')
+  }
 ];
 
 export default routes;

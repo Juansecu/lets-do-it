@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CreateCategoryPage } from './create-category.page';
+import { SaveCategoryPage } from './save-category.page';
 
 describe('CreateCategoryPage', () => {
   let component: CreateCategoryPage;

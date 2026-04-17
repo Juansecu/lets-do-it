@@ -53,7 +53,12 @@ export class Categories {
 
   async getCategoryById(categoryId: number): Promise<CategoryEntity | null> {
     return await this._repository.findOne({
-      where: { categoryId }
+      where: { categoryId },
+      relations: ['tasks']
     });
+  }
+
+  async updateCategory(category: CategoryEntity): Promise<CategoryEntity> {
+    return await this._repository.save(category);
   }
 }
