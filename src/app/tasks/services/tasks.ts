@@ -60,4 +60,13 @@ export class Tasks {
       relations: ['categories']
     });
   }
+
+  async toggleTaskCompletion(task: TaskEntity): Promise<void> {
+    task.isCompleted = task.isCompleted === 0 ? 1 : 0;
+
+    await this._tasksRepository.save(task);
+
+    if (sqliteParams.platform === 'web')
+      await sqliteParams.connection.saveToStore(tasksDataSourceConfig.database);
+  }
 }

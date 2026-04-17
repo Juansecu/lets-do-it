@@ -20,9 +20,8 @@ const dataSourceOptions: DataSourceOptions = {
     tasksEntities.TaskEntity
   ],
   migrations: [
-    categoriesMigrations.CreateCategoriesTable1776370409720,
-    tasksMigrations.CreateTasksTableMigration1776371615832,
-    tasksMigrations.CreateTaskCategoryAssignmentsTableMigration1776374269777
+    ...Object.values(categoriesMigrations),
+    ...Object.values(tasksMigrations)
   ],
   migrationsRun: true,
   synchronize: false // Setting to true for development to auto-create tables

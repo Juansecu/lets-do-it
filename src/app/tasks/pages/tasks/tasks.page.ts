@@ -18,15 +18,13 @@ import {
   IonInfiniteScrollContent,
   InfiniteScrollCustomEvent,
   IonBadge,
-  IonNote,
-  IonCheckbox,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle, IonChip
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {add, trash, listOutline, alertCircleOutline} from "ionicons/icons";
+import {add, trash, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline} from "ionicons/icons";
 import {CommonModule} from "@angular/common";
 
 import {Tasks} from "../../services/tasks";
@@ -54,8 +52,6 @@ import {TaskEntity} from "../../entities";
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonBadge,
-    IonNote,
-    IonCheckbox,
     IonCard,
     IonCardContent,
     IonCardHeader,
@@ -76,7 +72,7 @@ export default class TasksPage {
   canLoadMore: boolean = true;
 
   constructor() {
-    addIcons({ add, trash, listOutline, alertCircleOutline });
+    addIcons({ add, trash, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline });
   }
 
   ionViewDidEnter() {
@@ -115,5 +111,15 @@ export default class TasksPage {
 
   onIonInfinite(event: any) {
     this.loadTasks(10, event as InfiniteScrollCustomEvent);
+  }
+
+  async toggleTaskCompletion(task: TaskEntity) {
+    this.errorMessage = null;
+    try {
+      await this._TASKS_SERVICE.toggleTaskCompletion(task);
+    } catch (error) {
+      console.error(`Error toggling task completion: ${error}`);
+      this.errorMessage = 'Hubo un error al actualizar el estado de la tarea.';
+    }
   }
 }

@@ -26,6 +26,11 @@ export class TaskEntity {
     nullable: true
   })
   description!: string;
+  @Column('integer', {
+    name: 'Is_completed',
+    default: 0
+  })
+  isCompleted!: number;
 
   @JoinTable({
     name: 'Task_category_assignments',
