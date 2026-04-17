@@ -44,6 +44,13 @@ export class Tasks {
     return savedTask;
   }
 
+  async deleteTask(task: TaskEntity): Promise<void> {
+    await this._tasksRepository.remove(task);
+
+    if (sqliteParams.platform === 'web')
+      await sqliteParams.connection.saveToStore(tasksDataSourceConfig.database);
+  }
+
   async getTasks(page = 1, take = 10): Promise<TaskEntity[]> {
     this._PAGE.set(page);
 

@@ -99,9 +99,13 @@
                 slot="icon-only"
               ></ion-icon>
             </ion-item-option>
-            <!--<ion-item-option color="danger" (click)="deleteTask(task.taskId)">
+            <ion-item-option
+              color="danger"
+              (click)="deleteTask(task)"
+              (keydown.enter)="deleteTask(task)"
+            >
               <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-            </ion-item-option>-->
+            </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
       }

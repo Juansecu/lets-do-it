@@ -24,7 +24,7 @@ import {
   IonCardTitle, IonChip
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {add, trash, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline} from "ionicons/icons";
+import {add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline} from "ionicons/icons";
 import {CommonModule} from "@angular/common";
 
 import {Tasks} from "../../services/tasks";
@@ -72,7 +72,7 @@ export default class TasksPage {
   canLoadMore: boolean = true;
 
   constructor() {
-    addIcons({ add, trash, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline });
+    addIcons({ add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline });
   }
 
   ionViewDidEnter() {
@@ -84,6 +84,16 @@ export default class TasksPage {
     this.currentPage = 1;
     this.canLoadMore = true;
     this.loadTasks(20);
+  }
+
+  async deleteTask(task: TaskEntity): Promise<void> {
+    try {
+      await this._TASKS_SERVICE.deleteTask(task);
+      this.tasks = this.tasks.filter(t => t.taskId !== task.taskId);
+    } catch (error) {
+      console.error(`Error deleting task: ${error}`);
+      this.errorMessage = 'Hubo un error al eliminar la tarea.';
+    }
   }
 
   async loadTasks(take = 10, event?: InfiniteScrollCustomEvent) {
