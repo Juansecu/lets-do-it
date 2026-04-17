@@ -51,14 +51,26 @@ export class Tasks {
       await sqliteParams.connection.saveToStore(tasksDataSourceConfig.database);
   }
 
-  async getTasks(page = 1, take = 10): Promise<TaskEntity[]> {
+  async getTasks(page = 1, take = 10, categoryId?: number): Promise<TaskEntity[]> {
     this._PAGE.set(page);
 
-    return await this._tasksRepository.find({
+    const queryOptions: any = {
       skip: (this._PAGE() - 1) * take,
       take: take,
-      relations: ['categories']
-    });
+      relations: ['categories'],
+      order: { name: 'ASC' }
+    };
+
+    if (categoryId) {
+      // Find tasks that have a category with the specified ID
+      queryOptions.where = {
+        categories: {
+          categoryId: categoryId
+        }
+      };
+    }
+
+    return await this._tasksRepository.find(queryOptions);
   }
 
   async getTaskById(taskId: number): Promise<TaskEntity | null> {

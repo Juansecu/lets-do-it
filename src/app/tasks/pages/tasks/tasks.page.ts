@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -21,14 +21,21 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardTitle, IonChip
+  IonCardTitle,
+  IonChip,
+  IonModal,
+  IonRadioGroup,
+  IonRadio, IonNote
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline} from "ionicons/icons";
+import {add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline} from "ionicons/icons";
 import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 import {Tasks} from "../../services/tasks";
 import {TaskEntity} from "../../entities";
+import {Categories} from "../../../categories/services/categories";
+import {CategoryEntity} from "../../../categories/entities";
 
 @Component({
   selector: 'app-tasks',
@@ -56,27 +63,71 @@ import {TaskEntity} from "../../entities";
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
+    IonModal,
+    IonRadioGroup,
+    IonRadio,
     RouterLink,
     CommonModule,
-    IonChip
+    IonChip,
+    FormsModule,
+    IonNote
   ],
 })
 export default class TasksPage {
+  @ViewChild('filterModal') filterModal!: IonModal;
+
+  private readonly _CATEGORIES_SERVICE = inject(Categories);
   private readonly _TASKS_SERVICE = inject(Tasks);
 
   tasks: TaskEntity[] = [];
+  categories: CategoryEntity[] = [];
   errorMessage: string | null = null;
+  selectedCategoryId: number | null = null;
 
-  // Pagination
+  // Pagination for Tasks
   currentPage: number = 1;
   canLoadMore: boolean = true;
 
+  // Pagination for Filter Categories
+  categoriesCurrentPage: number = 1;
+  categoriesCanLoadMore: boolean = true;
+
   constructor() {
-    addIcons({ add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline });
+    addIcons({ add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline });
   }
 
   ionViewDidEnter() {
+    this.resetCategoriesAndLoad();
     this.resetAndLoad();
+  }
+
+  resetCategoriesAndLoad() {
+    this.categories = [];
+    this.categoriesCurrentPage = 1;
+    this.categoriesCanLoadMore = true;
+    this.loadFilterCategories(20);
+  }
+
+  async loadFilterCategories(take = 10, event?: InfiniteScrollCustomEvent) {
+    try {
+      const newCategories = await this._CATEGORIES_SERVICE.getCategories(this.categoriesCurrentPage, take);
+
+      if (newCategories.length < 10) {
+        this.categoriesCanLoadMore = false;
+      }
+
+      this.categories = [...this.categories, ...newCategories];
+      this.categoriesCurrentPage++;
+
+      if (event) event.target.complete();
+    } catch (error) {
+      console.error('Error loading filter categories:', error);
+      if (event) event.target.complete();
+    }
+  }
+
+  onCategoriesInfinite(event: any) {
+    this.loadFilterCategories(10, event as InfiniteScrollCustomEvent);
   }
 
   resetAndLoad() {
@@ -101,7 +152,8 @@ export default class TasksPage {
     try {
       const newTasks = await this._TASKS_SERVICE.getTasks(
         this.currentPage,
-        take
+        take,
+        this.selectedCategoryId || undefined
       );
 
       if (newTasks.length < 10) {
@@ -131,5 +183,16 @@ export default class TasksPage {
       console.error(`Error toggling task completion: ${error}`);
       this.errorMessage = 'Hubo un error al actualizar el estado de la tarea.';
     }
+  }
+
+  onFilterChange() {
+    this.resetAndLoad();
+    this.filterModal.dismiss();
+  }
+
+  get selectedCategoryName(): string {
+    if (!this.selectedCategoryId) return 'Todas las tareas';
+    const cat = this.categories.find(c => c.categoryId === this.selectedCategoryId);
+    return cat ? cat.name : 'Todas las tareas';
   }
 }
