@@ -84,4 +84,9 @@
       }
     </ion-list>
   }
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!canLoadMore">
+    <ion-infinite-scroll-content loadingText="Cargando más categorías...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
