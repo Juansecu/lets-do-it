@@ -29,6 +29,13 @@ export class Categories {
     return savedCategory;
   }
 
+  async deleteCategory(category: CategoryEntity): Promise<void> {
+    await this._repository.remove(category);
+
+    if (sqliteParams.platform === 'web')
+      await sqliteParams.connection.saveToStore(tasksDataSourceConfig.database);
+  }
+
   async getCategories(page = 1, take = 10): Promise<CategoryEntity[]> {
     this._PAGE.set(page);
 
@@ -41,6 +48,12 @@ export class Categories {
   async getCategoriesByIds(categoryIds: number[]): Promise<CategoryEntity[]> {
     return await this._repository.findBy({
       categoryId: In(categoryIds)
+    });
+  }
+
+  async getCategoryById(categoryId: number): Promise<CategoryEntity | null> {
+    return await this._repository.findOne({
+      where: { categoryId }
     });
   }
 }

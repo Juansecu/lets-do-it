@@ -54,6 +54,16 @@ export default class CategoriesPage {
     this.resetAndLoad();
   }
 
+  async deleteCategory(category: CategoryEntity): Promise<void> {
+    try {
+      await this._CATEGORIES_SERVICE.deleteCategory(category);
+      this.categories = this.categories.filter(c => c.categoryId !== category.categoryId);
+    } catch (error) {
+      console.error(`Error deleting category: ${error}`);
+      this.errorMessage = 'Hubo un error al eliminar la categoría.';
+    }
+  }
+
   resetAndLoad() {
     this.categories = [];
     this.currentPage = 1;

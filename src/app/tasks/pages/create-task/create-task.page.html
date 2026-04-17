@@ -23,7 +23,7 @@
           [(ngModel)]="task.title"
           name="title"
           placeholder="Ej. Comprar leche, Terminar informe..."
-          required
+          [required]="true"
           (ionInput)="errorMessage = null"
         ></ion-input>
       </ion-item>
@@ -35,12 +35,12 @@
           [(ngModel)]="task.description"
           name="description"
           placeholder="Detalles adicionales..."
-          rows="3"
+          [rows]="3"
         ></ion-textarea>
       </ion-item>
 
       <!-- Category Selection -->
-      <ion-item button id="open-categories-modal">
+      <ion-item [button]="true" id="open-categories-modal">
         <ion-label>Categorías</ion-label>
         <ion-note slot="end">{{ selectedCategories.length }} seleccionadas</ion-note>
       </ion-item>
