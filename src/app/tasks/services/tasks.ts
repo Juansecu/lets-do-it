@@ -18,8 +18,6 @@ export class Tasks {
 
   private readonly _PAGE: WritableSignal<number> = signal(1);
 
-  private readonly _MAX_AMOUNT_OF_TASKS = 10;
-
   private get _tasksRepository(): Repository<TaskEntity> {
     return tasksDataSourceConfig.dataSource.getRepository(TaskEntity);
   }
@@ -46,12 +44,12 @@ export class Tasks {
     return savedTask;
   }
 
-  async getTasks(page = 1): Promise<TaskEntity[]> {
+  async getTasks(page = 1, take = 10): Promise<TaskEntity[]> {
     this._PAGE.set(page);
 
     return await this._tasksRepository.find({
-      skip: (this._PAGE() - 1) * this._MAX_AMOUNT_OF_TASKS,
-      take: this._MAX_AMOUNT_OF_TASKS,
+      skip: (this._PAGE() - 1) * take,
+      take: take,
       relations: ['categories']
     });
   }

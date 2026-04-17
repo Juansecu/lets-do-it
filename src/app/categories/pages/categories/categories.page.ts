@@ -58,13 +58,16 @@ export default class CategoriesPage {
     this.categories = [];
     this.currentPage = 1;
     this.canLoadMore = true;
-    this.loadCategories();
+    this.loadCategories(20);
   }
 
-  async loadCategories(event?: InfiniteScrollCustomEvent) {
+  async loadCategories(take = 10, event?: InfiniteScrollCustomEvent) {
     this.errorMessage = null;
     try {
-      const newCategories = await this._CATEGORIES_SERVICE.getCategories(this.currentPage);
+      const newCategories = await this._CATEGORIES_SERVICE.getCategories(
+        this.currentPage,
+        take
+      );
 
       if (newCategories.length < 10) {
         this.canLoadMore = false;
@@ -83,6 +86,6 @@ export default class CategoriesPage {
   }
 
   onIonInfinite(event: any) {
-    this.loadCategories(event as InfiniteScrollCustomEvent);
+    this.loadCategories(10, event as InfiniteScrollCustomEvent);
   }
 }

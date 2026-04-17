@@ -106,17 +106,6 @@ export default class CreateTaskPage implements OnInit {
       this.categories = [...this.categories, ...newCategories];
       this.currentPage++;
 
-      setTimeout(async () => {
-        const content = document.querySelector('ion-modal ion-content');
-
-        if (content) {
-          const scrollEl = await (content as HTMLIonContentElement).getScrollElement();
-          if (scrollEl.scrollHeight <= scrollEl.clientHeight && this.canLoadMore) {
-            this.loadCategories(); // load more automatically
-          }
-        }
-      });
-
       if (event) await event.target.complete();
     } catch (error) {
       console.error('Error loading categories:', error);

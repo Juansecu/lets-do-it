@@ -87,13 +87,16 @@ export default class TasksPage {
     this.tasks = [];
     this.currentPage = 1;
     this.canLoadMore = true;
-    this.loadTasks();
+    this.loadTasks(20);
   }
 
-  async loadTasks(event?: InfiniteScrollCustomEvent) {
+  async loadTasks(take = 10, event?: InfiniteScrollCustomEvent) {
     this.errorMessage = null;
     try {
-      const newTasks = await this._TASKS_SERVICE.getTasks(this.currentPage);
+      const newTasks = await this._TASKS_SERVICE.getTasks(
+        this.currentPage,
+        take
+      );
 
       if (newTasks.length < 10) {
         this.canLoadMore = false;
@@ -102,19 +105,15 @@ export default class TasksPage {
       this.tasks = [...this.tasks, ...newTasks];
       this.currentPage++;
 
-      if (event) {
-        event.target.complete();
-      }
+      if (event) event.target.complete();
     } catch (error) {
       console.error('Error loading tasks:', error);
       this.errorMessage = 'Hubo un error al cargar las tareas. Por favor, inténtalo de nuevo.';
-      if (event) {
-        event.target.complete();
-      }
+      if (event) event.target.complete();
     }
   }
 
   onIonInfinite(event: any) {
-    this.loadTasks(event as InfiniteScrollCustomEvent);
+    this.loadTasks(10, event as InfiniteScrollCustomEvent);
   }
 }
