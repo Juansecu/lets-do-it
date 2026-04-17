@@ -33,6 +33,11 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "sql-wasm.wasm",
+                "input": "node_modules/sql.js/dist",
+                "output": "assets"
               }
             ],
             "styles": ["src/global.scss", "src/theme/variables.scss"],
@@ -75,6 +80,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "watch": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "app:build:production"
@@ -106,6 +114,11 @@
               {
                 "glob": "**/*",
                 "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "sql-wasm.wasm",
+                "input": "node_modules/sql.js/dist",
                 "output": "assets"
               }
             ],
