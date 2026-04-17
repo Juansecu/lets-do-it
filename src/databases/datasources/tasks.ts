@@ -17,8 +17,7 @@ const dataSourceOptions: DataSourceOptions = {
   mode: 'no-encryption',
   entities: [
     categoriesEntities.CategoryEntity,
-    tasksEntities.TaskEntity,
-    tasksEntities.TaskCategoryAssignmentEntity
+    tasksEntities.TaskEntity
   ],
   migrations: [
     categoriesMigrations.CreateCategoriesTable1776370409720,

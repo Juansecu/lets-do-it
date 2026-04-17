@@ -1,4 +1,5 @@
 import {Component, inject} from '@angular/core';
+import {CommonModule} from "@angular/common";
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -28,8 +29,7 @@ import {add, trash, folderOutline, alertCircleOutline} from "ionicons/icons";
 
 import {CategoryEntity} from "../../entities";
 
-import {CategoriesService} from "../../services/categories.service";
-import {CommonModule} from "@angular/common";
+import {Categories} from "../../services/categories";
 
 @Component({
   selector: 'app-categories',
@@ -39,7 +39,7 @@ import {CommonModule} from "@angular/common";
   imports: [IonContent, IonButton, IonButtons, IonHeader, IonIcon, IonLabel, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, RouterLink, CommonModule]
 })
 export default class CategoriesPage {
-  private readonly _CATEGORIES_SERVICE: CategoriesService = inject(CategoriesService);
+  private readonly _CATEGORIES_SERVICE: Categories = inject(Categories);
 
   categories: CategoryEntity[] = [];
   errorMessage: string | null = null;

@@ -19,7 +19,7 @@ import {Router} from "@angular/router";
 import {addIcons} from "ionicons";
 import {alertCircleOutline} from "ionicons/icons";
 
-import {CategoriesService} from "../../services/categories.service";
+import {Categories} from "../../services/categories";
 
 @Component({
   selector: 'app-create-category',
@@ -29,7 +29,7 @@ import {CategoriesService} from "../../services/categories.service";
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonLabel, IonInput, IonButton, IonIcon, IonText, CommonModule, FormsModule]
 })
 export default class CreateCategoryPage {
-  private readonly _CATEGORIES_SERVICE: CategoriesService = inject(CategoriesService);
+  private readonly _CATEGORIES_SERVICE: Categories = inject(Categories);
   private readonly _ROUTER: Router = inject(Router);
 
   categoryName: string = '';

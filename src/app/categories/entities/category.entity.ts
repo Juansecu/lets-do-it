@@ -22,13 +22,6 @@ export class CategoryEntity {
   })
   name!: string;
 
-  @JoinTable({
-    name: 'Task_category_assignments',
-    joinColumn: {
-      name: 'Category_id',
-      referencedColumnName: 'categoryId'
-    }
-  })
   @ManyToMany(() => TaskEntity, task => task.categories)
   tasks!: TaskEntity[];
 }

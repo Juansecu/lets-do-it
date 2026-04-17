@@ -1,5 +1,5 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import { Repository } from 'typeorm';
+import {In, Repository} from 'typeorm';
 
 import sqliteParams from "../../../databases/sqlite-params";
 
@@ -10,10 +10,8 @@ import { CategoryEntity } from '../entities';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriesService {
+export class Categories {
   private readonly _PAGE: WritableSignal<number> = signal(1);
-
-  private readonly _MAX_AMOUNT_OF_CATEGORIES = 10;
 
   private get _repository(): Repository<CategoryEntity> {
     return tasksDataSourceConfig.dataSource.getRepository(CategoryEntity);
@@ -31,12 +29,18 @@ export class CategoriesService {
     return savedCategory;
   }
 
-  async getCategories(page = 1): Promise<CategoryEntity[]> {
+  async getCategories(page = 1, take = 10): Promise<CategoryEntity[]> {
     this._PAGE.set(page);
 
     return await this._repository.find({
-      skip: (this._PAGE() - 1) * this._MAX_AMOUNT_OF_CATEGORIES,
-      take: this._MAX_AMOUNT_OF_CATEGORIES
+      skip: (this._PAGE() - 1) * take,
+      take: take
+    });
+  }
+
+  async getCategoriesByIds(categoryIds: number[]): Promise<CategoryEntity[]> {
+    return await this._repository.findBy({
+      categoryId: In(categoryIds)
     });
   }
 }

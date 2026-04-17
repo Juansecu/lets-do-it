@@ -1,0 +1,125 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva Tarea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Crear Tarea</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form (ngSubmit)="onCreateTask()">
+    <ion-list>
+      <!-- Title Input -->
+      <ion-item>
+        <ion-label position="floating">Título de la Tarea</ion-label>
+        <ion-input
+          [(ngModel)]="task.title"
+          name="title"
+          placeholder="Ej. Comprar leche, Terminar informe..."
+          required
+          (ionInput)="errorMessage = null"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Description Textarea -->
+      <ion-item>
+        <ion-label position="floating">Descripción (Opcional)</ion-label>
+        <ion-textarea
+          [(ngModel)]="task.description"
+          name="description"
+          placeholder="Detalles adicionales..."
+          rows="3"
+        ></ion-textarea>
+      </ion-item>
+
+      <!-- Category Selection -->
+      <ion-item button id="open-categories-modal">
+        <ion-label>Categorías</ion-label>
+        <ion-note slot="end">{{ selectedCategories.length }} seleccionadas</ion-note>
+      </ion-item>
+
+      @if (selectedCategories.length > 0) {
+        <div class="ion-padding-vertical">
+          @for (category of selectedCategories; track category.categoryId) {
+            <ion-chip color="primary">
+              <ion-label>{{ category.name }}</ion-label>
+              <ion-icon
+                name="close-circle"
+                (click)="removeCategory(category)"
+                (keydown.enter)="removeCategory(category)"
+              ></ion-icon>
+            </ion-chip>
+          }
+        </div>
+      }
+    </ion-list>
+
+    <!-- Error Display -->
+    @if (errorMessage) {
+      <ion-text color="danger">
+        <p class="ion-padding-start ion-padding-top">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          {{ errorMessage }}
+        </p>
+      </ion-text>
+    }
+
+    <!-- Create Button -->
+    <div class="ion-margin-top">
+      <ion-button expand="block" type="submit" [disabled]="!task.title">
+        Crear Tarea
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
+
+<!-- Categories Modal -->
+<ion-modal trigger="open-categories-modal">
+  <ng-template>
+    <div class="ion-page">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Seleccionar Categorías</ion-title>
+          <ion-buttons slot="end">
+            <ion-button
+              (click)="closeModal()"
+              (keydown.enter)="closeModal()"
+            >Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content [scrollY]="true" class="ion-padding">
+        <ion-list>
+          @for (category of categories; track category.categoryId) {
+            <ion-item
+              (click)="toggleCategory(category)"
+              (keydown.enter)="toggleCategory(category)"
+            >
+              <ion-label>{{ category.name }}</ion-label>
+              <ion-checkbox
+                slot="end"
+                [checked]="isCategorySelected(category.categoryId)"
+                (click)="$event.stopPropagation()"
+                (ionChange)="toggleCategory(category)"
+                (keydown.enter)="toggleCategory(category)"
+              ></ion-checkbox>
+            </ion-item>
+          }
+        </ion-list>
+
+        <!-- Infinite Scroll inside Modal -->
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!canLoadMore">
+          <ion-infinite-scroll-content loadingText="Cargando más categorías...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+    </div>
+  </ng-template>
+</ion-modal>

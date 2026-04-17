@@ -32,6 +32,10 @@ export class TaskEntity {
     joinColumn: {
       name: 'Task_id',
       referencedColumnName: 'taskId'
+    },
+    inverseJoinColumn: {
+      name: 'Category_id',
+      referencedColumnName: 'categoryId'
     }
   })
   @ManyToMany(() => CategoryEntity, category => category.tasks)

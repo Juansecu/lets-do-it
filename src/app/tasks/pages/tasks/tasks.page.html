@@ -3,12 +3,13 @@
     <ion-title>Tareas</ion-title>
     <ion-buttons slot="end">
       <ion-button
+        routerLink="/tasks/create-task"
         fill="solid"
         color="primary"
         shape="round"
       >
-        <ion-icon name="add"></ion-icon>
-        <ion-label>Añadir Tarea</ion-label>
+        <ion-icon name="add" slot="start"></ion-icon>
+        <ion-label>Nueva</ion-label>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -20,4 +21,70 @@
       <ion-title size="large">Tareas</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Error Message -->
+  @if (errorMessage) {
+    <div class="ion-padding">
+      <ion-card color="danger">
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Error
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="ion-text-center">
+          <p>{{ errorMessage }}</p>
+          <ion-button
+            fill="clear"
+            color="light"
+            (click)="resetAndLoad()"
+            (keydown.enter)="resetAndLoad()"
+          >
+            Reintentar
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!errorMessage && tasks.length === 0) {
+    <div class="ion-padding">
+      <ion-card>
+        <ion-card-content class="ion-text-center">
+          <ion-icon name="list-outline" size="large" color="medium"></ion-icon>
+          <p>No tienes tareas creadas.</p>
+          <ion-button fill="clear" routerLink="/tasks/create-task">
+            Crear mi primera tarea
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  }
+
+  <!-- Tasks List -->
+  @if (!errorMessage && tasks.length > 0) {
+    <ion-list>
+      @for (task of tasks; track task.taskId) {
+        <ion-item
+          routerLink="/tasks/{{ task.taskId }}"
+          [detail]="true"
+          lines="full"
+        >
+          <ion-label>
+            <h2>{{ task.name }}</h2>
+            @if (task.categories && task.categories.length > 0) {
+              <div class="ion-margin-top">
+                @for (category of task.categories; track category.categoryId) {
+                  <ion-chip color="primary" [outline]="true">
+                    <ion-label>{{ category.name }}</ion-label>
+                  </ion-chip>
+                }
+              </div>
+            }
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
 </ion-content>
