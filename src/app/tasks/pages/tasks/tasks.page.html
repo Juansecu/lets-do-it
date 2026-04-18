@@ -114,57 +114,94 @@
 
   <!-- Tasks List -->
   @if (!errorMessage && tasks.length > 0) {
-    <ion-list>
-      @for (task of tasks; track task.taskId) {
-        <ion-item-sliding>
-          <ion-item
-            routerLink="/tasks/{{ task.taskId }}"
-            [detail]="true"
-            lines="full"
-          >
-            <ion-label>
-              <h2>{{ task.name }}</h2>
-              @if (task.categories && task.categories.length > 0) {
-                <div class="ion-margin-top">
-                  @for (category of task.categories; track category.categoryId) {
-                    <ion-chip color="primary" [outline]="true">
-                      <ion-label>{{ category.name }}</ion-label>
-                    </ion-chip>
+    @if (visualizationType === 'grid') {
+      <ion-grid>
+        <ion-row>
+          @for (task of tasks; track task.taskId) {
+            <ion-col size="6" size-lg="4">
+              <ion-card  [routerLink]="['/tasks', task.taskId]">
+                <ion-card-header>
+                  <ion-card-title>
+                    <ion-checkbox
+                      slot="start"
+                      [checked]="task.isCompleted === 1"
+                      (click)="$event.stopPropagation()"
+                      (ionChange)="toggleTaskCompletion(task)"
+                    ></ion-checkbox>
+                    {{ task.name }}
+                  </ion-card-title>
+                  @if (task.isCompleted) {
+                    <ion-badge color="success" class="ion-margin-top">Completado</ion-badge>
                   }
-                </div>
+                </ion-card-header>
+                <ion-card-content>
+                  @if (task.description) {
+                    <p class="ion-text-nowrap" style="overflow: hidden; text-overflow: ellipsis;">{{ task.description }}</p>
+                  }
+                  <div class="ion-margin-top">
+                    @for (category of task.categories; track category.categoryId) {
+                      <ion-badge  color="secondary" class="ion-margin-end">{{ category.name }}</ion-badge>
+                    }
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          }
+        </ion-row>
+      </ion-grid>
+    } @else {
+      <ion-list>
+        @for (task of tasks; track task.taskId) {
+          <ion-item-sliding>
+            <ion-item
+              routerLink="/tasks/{{ task.taskId }}"
+              [detail]="true"
+              lines="full"
+            >
+              <ion-label>
+                <h2>{{ task.name }}</h2>
+                @if (task.categories && task.categories.length > 0) {
+                  <div class="ion-margin-top">
+                    @for (category of task.categories; track category.categoryId) {
+                      <ion-chip color="primary" [outline]="true">
+                        <ion-label>{{ category.name }}</ion-label>
+                      </ion-chip>
+                    }
+                  </div>
+                }
+              </ion-label>
+              @if (task.isCompleted) {
+                <ion-badge color="success" class="ion-padding-end ion-padding-start">Completado</ion-badge>
               }
-            </ion-label>
-            @if (task.isCompleted) {
-              <ion-badge color="success" class="ion-padding-end ion-padding-start">Completado</ion-badge>
-            }
-          </ion-item>
-          <ion-item-options slot="end">
-            <ion-item-option
-              color="primary"
-              (click)="toggleTaskCompletion(task)"
-              (keydown.enter)="toggleTaskCompletion(task)"
-            >
-              <ion-icon
-                [name]="task.isCompleted ? 'close-circle-outline' : 'checkmark-circle-outline'"
-                slot="icon-only"
-                style="color: white"
-              ></ion-icon>
-            </ion-item-option>
-            <ion-item-option
-              color="danger"
-              (click)="deleteTask(task)"
-              (keydown.enter)="deleteTask(task)"
-            >
-              <ion-icon
-                name="trash-outline"
-                slot="icon-only"
-                style="color: white"
-              ></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      }
-    </ion-list>
+            </ion-item>
+            <ion-item-options slot="end">
+              <ion-item-option
+                color="primary"
+                (click)="toggleTaskCompletion(task)"
+                (keydown.enter)="toggleTaskCompletion(task)"
+              >
+                <ion-icon
+                  [name]="task.isCompleted ? 'close-circle-outline' : 'checkmark-circle-outline'"
+                  slot="icon-only"
+                  style="color: white"
+                ></ion-icon>
+              </ion-item-option>
+              <ion-item-option
+                color="danger"
+                (click)="deleteTask(task)"
+                (keydown.enter)="deleteTask(task)"
+              >
+                <ion-icon
+                  name="trash-outline"
+                  slot="icon-only"
+                  style="color: white"
+                ></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        }
+      </ion-list>
+    }
   }
 
   <!-- Infinite Scroll -->

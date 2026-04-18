@@ -18,7 +18,7 @@ import {
   IonItem,
   IonLabel,
   IonIcon,
-  IonSkeletonText, IonButton, IonNote
+  IonSkeletonText, IonButton, IonNote, IonCheckbox
 } from '@ionic/angular/standalone';
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {addIcons} from "ionicons";
@@ -54,7 +54,8 @@ import {TaskEntity} from "../../entities";
     FormsModule,
     IonButton,
     RouterLink,
-    IonNote
+    IonNote,
+    IonCheckbox
   ]
 })
 export default class TaskPage implements OnInit {
@@ -93,6 +94,16 @@ export default class TaskPage implements OnInit {
       this.errorMessage = 'Hubo un error al cargar los detalles de la tarea.';
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async toggleTaskCompletion(task: TaskEntity) {
+    this.errorMessage = null;
+    try {
+      await this._TASKS_SERVICE.toggleTaskCompletion(task);
+    } catch (error) {
+      console.error(`Error toggling task completion: ${error}`);
+      this.errorMessage = 'Hubo un error al actualizar el estado de la tarea.';
     }
   }
 }

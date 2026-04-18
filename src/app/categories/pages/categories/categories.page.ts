@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import { RouterLink } from '@angular/router';
 import {
@@ -22,7 +22,10 @@ import {
   IonCardTitle,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  InfiniteScrollCustomEvent
+  InfiniteScrollCustomEvent,
+  IonGrid,
+  IonRow,
+  IonCol
 } from '@ionic/angular/standalone';
 import {addIcons} from "ionicons";
 import {add, pencil, trash, folderOutline, alertCircleOutline} from "ionicons/icons";
@@ -30,24 +33,31 @@ import {add, pencil, trash, folderOutline, alertCircleOutline} from "ionicons/ic
 import {CategoryEntity} from "../../entities";
 
 import {Categories} from "../../services/categories";
+import {RemoteConfig} from "../../../shared/services/firebase/remote-config";
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.page.html',
   styleUrls: ['./categories.page.scss'],
   standalone: true,
-  imports: [IonContent, IonButton, IonButtons, IonHeader, IonIcon, IonLabel, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, RouterLink, CommonModule]
+  imports: [IonContent, IonButton, IonButtons, IonHeader, IonIcon, IonLabel, IonList, IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonTitle, IonToolbar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol, RouterLink, CommonModule]
 })
-export default class CategoriesPage {
+export default class CategoriesPage implements OnInit{
   private readonly _CATEGORIES_SERVICE: Categories = inject(Categories);
+  private readonly _REMOTE_CONFIG_SERVICE = inject(RemoteConfig);
 
-  categories: CategoryEntity[] = [];
-  errorMessage: string | null = null;
-  currentPage: number = 1;
   canLoadMore: boolean = true;
+  categories: CategoryEntity[] = [];
+  currentPage: number = 1;
+  errorMessage: string | null = null;
+  visualizationType = 'list';
 
   constructor() {
     addIcons({ add, pencil, trash, folderOutline, alertCircleOutline })
+  }
+
+  ngOnInit(): void {
+    this.visualizationType = this._REMOTE_CONFIG_SERVICE.getValue('visualizationType').asString();
   }
 
   ionViewDidEnter() {

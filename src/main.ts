@@ -9,6 +9,8 @@ import {
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import {JeepSqlite} from "jeep-sqlite/dist/components/jeep-sqlite";
 
+import {bootstrapFirebase} from "./config/firebase";
+
 import sqliteParams from "./databases/sqlite-params";
 
 import { routes } from './app/app.routes';
@@ -31,10 +33,12 @@ const startApp = async () => {
 
   await initializeDataSources();
 
-  bootstrap();
+  await bootstrapFirebase();
+
+  await bootstrap();
 };
 
-function bootstrap(): void {
+async function bootstrap(): Promise<void> {
   bootstrapApplication(AppComponent, {
     providers: [
       { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

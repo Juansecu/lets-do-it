@@ -12,6 +12,8 @@ App para administrar tareas.
 - Variable de entorno `ANDROID_HOME` configurada
   con la ruta del SDK de Android para correr la aplicación
   usando el comando `ionic cap run android -l --external`
+- Cuenta activa de Firebase con acceso a Remote Config
+  para configurar feature flags ([más información](#configuración))
 
 ## Estructura del Proyecto
 
@@ -33,8 +35,10 @@ The file structure is as follows:
 │   ├── app/ # Módulos y componentes de la aplicación
 │   │   ├── categories # Categorías de tareas
 │   │   ├── shared/ # Compartido entre features
-│   │   │   └── components/ # Componentes compartidos
-│   │   │       └── tabs/ # Tabs de la aplicación
+│   │   │   ├── components/ # Componentes compartidos
+│   │   │   │    └── tabs/ # Tabs de la aplicación
+│   │   │   └── services/ # Servicios compartidos
+                 └── firebase/ # Servicios de Firebase
 │   │   ├── tasks/ # Tareas
 │   │   ├── app.component.html # Template del componente raíz de la aplicación
 │   │   ├── app.component.scss # Estilos del componente raíz de la aplicación
@@ -42,6 +46,11 @@ The file structure is as follows:
 │   │   ├── app.component.ts # Componente raíz de la aplicación
 │   │   └── app.routes.ts # Rutas de la aplicación
 │   ├── assets/ # Recursos estáticos como imágenes y fuentes
+│   ├── config/ # Configuración de la aplicación
+│   │   └── firebase/ # Configuración de RemoteConfig
+│   │       ├── firebase.ts # Configuración de Firebase
+│   │       ├── index.ts # Punto de inicialización de Firebase
+│   │       └── remote-config.ts # Configuración de RemoteConfig
 │   ├── databases/ # Configuración de las bases de datos locales
 │   │   ├── datasources/ # Configuración de cada una de las bases de datos locales
 │   │   │   ├── initialize-data-sources.ts # Inicialización de las bases de datos
@@ -88,6 +97,19 @@ puede contener las siguientes carpetas o archivos:
 ├── services/ # Servicios relacionados al feature
 └── *.routes.ts # Rutas relacionadas al feature
 ```
+
+## Configuración
+
+Para poder configurar la aplicación, se deben reemplazar
+las credenciales de acceso de Firebase en los archivos
+`src/environments/environment.ts` y `src/environments/environment.prod.ts`.
+
+Una vez que las credenciales de acceso a Firebase sean reemplazadas,
+las siguientes propiedades pueden ser configuradas en Remote Config:
+
+| Propiedad           | Tipo   | Descripción                                                                                                         |
+|---------------------|--------|---------------------------------------------------------------------------------------------------------------------|
+| `visualizationType` | String | El modo en el que se visualizarán las páginas de tareas y categorías. El único valor útil en este momento es `grid` |
 
 ## Correr Aplicación
 

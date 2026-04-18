@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonButton,
@@ -25,17 +25,24 @@ import {
   IonChip,
   IonModal,
   IonRadioGroup,
-  IonRadio, IonNote
+  IonRadio,
+  IonNote,
+  IonCheckbox,
+  IonGrid,
+  IonRow,
+  IonCol
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline} from "ionicons/icons";
+import {add, pencil, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline} from "ionicons/icons";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
-import {Tasks} from "../../services/tasks";
 import {TaskEntity} from "../../entities";
-import {Categories} from "../../../categories/services/categories";
 import {CategoryEntity} from "../../../categories/entities";
+
+import {Tasks} from "../../services/tasks";
+import {Categories} from "../../../categories/services/categories";
+import {RemoteConfig} from "../../../shared/services/firebase/remote-config";
 
 @Component({
   selector: 'app-tasks',
@@ -66,6 +73,10 @@ import {CategoryEntity} from "../../../categories/entities";
     IonModal,
     IonRadioGroup,
     IonRadio,
+    IonCheckbox,
+    IonGrid,
+    IonRow,
+    IonCol,
     RouterLink,
     CommonModule,
     IonChip,
@@ -73,16 +84,18 @@ import {CategoryEntity} from "../../../categories/entities";
     IonNote
   ],
 })
-export default class TasksPage {
+export default class TasksPage implements OnInit {
   @ViewChild('filterModal') filterModal!: IonModal;
 
   private readonly _CATEGORIES_SERVICE = inject(Categories);
+  private readonly _REMOTE_CONFIG_SERVICE = inject(RemoteConfig);
   private readonly _TASKS_SERVICE = inject(Tasks);
 
   tasks: TaskEntity[] = [];
   categories: CategoryEntity[] = [];
   errorMessage: string | null = null;
   selectedCategoryId: number | null = null;
+  visualizationType = 'list';
 
   // Pagination for Tasks
   currentPage: number = 1;
@@ -93,7 +106,11 @@ export default class TasksPage {
   categoriesCanLoadMore: boolean = true;
 
   constructor() {
-    addIcons({ add, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline });
+    addIcons({ add, pencil, trashOutline, listOutline, alertCircleOutline, closeCircleOutline, checkmarkCircleOutline, filterOutline });
+  }
+
+  ngOnInit(): void {
+    this.visualizationType = this._REMOTE_CONFIG_SERVICE.getValue('visualizationType').asString();
   }
 
   ionViewDidEnter() {
