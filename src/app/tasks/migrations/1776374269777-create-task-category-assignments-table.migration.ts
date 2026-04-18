@@ -1,6 +1,8 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
 export class CreateTaskCategoryAssignmentsTableMigration1776374269777 implements MigrationInterface {
+  name = 'CreateTaskCategoryAssignmentsTableMigration1776374269777';
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

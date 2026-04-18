@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.juansecu.letsdoit',
   appName: 'lets-do-it',
-  webDir: 'src',
+  webDir: 'www',
   plugins: {
     CapacitorSQLite: {
       androidBiometric: {

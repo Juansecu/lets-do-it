@@ -1,6 +1,8 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
 export class CreateTasksTableMigration1776371615832 implements MigrationInterface {
+  name = 'CreateTasksTableMigration1776371615832';
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

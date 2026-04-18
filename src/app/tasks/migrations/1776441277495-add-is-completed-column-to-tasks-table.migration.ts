@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class AddIsCompletedColumnToTasksTableMigration1776441277495 implements MigrationInterface {
+  name = 'AddIsCompletedColumnToTasksTableMigration1776441277495';
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE "Tasks"

@@ -7,8 +7,12 @@ import sqliteParams from "../sqlite-params";
 import * as categoriesEntities from '../../app/categories/entities';
 import * as tasksEntities from '../../app/tasks/entities';
 
-import * as categoriesMigrations from '../../app/categories/migrations';
-import * as tasksMigrations from '../../app/tasks/migrations';
+import {CreateCategoriesTableMigration1776370409720} from '../../app/categories/migrations';
+import {
+  CreateTasksTableMigration1776371615832,
+  CreateTaskCategoryAssignmentsTableMigration1776374269777,
+  AddIsCompletedColumnToTasksTableMigration1776441277495
+} from '../../app/tasks/migrations';
 
 const dataSourceOptions: DataSourceOptions = {
   database: 'lets-do-it-tasks',
@@ -20,11 +24,13 @@ const dataSourceOptions: DataSourceOptions = {
     tasksEntities.TaskEntity
   ],
   migrations: [
-    ...Object.values(categoriesMigrations),
-    ...Object.values(tasksMigrations)
+    CreateCategoriesTableMigration1776370409720,
+    CreateTasksTableMigration1776371615832,
+    CreateTaskCategoryAssignmentsTableMigration1776374269777,
+    AddIsCompletedColumnToTasksTableMigration1776441277495
   ],
   migrationsRun: true,
-  synchronize: false // Setting to true for development to auto-create tables
+  synchronize: false
 };
 const tasksDataSource: DataSource = new DataSource(dataSourceOptions);
 const dataSourceConfig: IDataSourceConfig = {
