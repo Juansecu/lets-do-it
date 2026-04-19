@@ -124,7 +124,7 @@ es necesario realizar los siguientes pasos:
    (`npx ionic cap sync` para utilizar configuración de desarrollo,
    y `npx ionic cap sync --prod` para utilizar configuración de producción)
 2. Abrir Android Studio y utilizar las opciones
-   **Build > Generate App Bundles or APKs**
+   **Build > Generate App Bundles or APKs > Generate APKs**
 
 Una vez que el proceso de compilación termine,
 se puede dar clic en el botón **Play** para correr la aplicación
