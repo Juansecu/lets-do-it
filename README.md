@@ -100,6 +100,30 @@ puede contener las siguientes carpetas o archivos:
 └── *.routes.ts # Rutas relacionadas al feature
 ```
 
+## Funcionalidades
+
+### Categorías
+
+- Crear categorías
+- Listar categorías de forma paginada mediante scroll infinito
+  (la carga inicial es de 20 elementos, y las cargas posteriores son de 10)
+- Mostrar categorías en grillas cuando la propiedad `visualizationType`
+  en Remote Config es `grid`. Por defecto, se muestra en lista
+- Editar categorías
+- Eliminar categorías
+
+### Tareas
+
+- Crear tareas
+- Listar tareas de forma paginada mediante scroll infinito
+  (la carga inicial es de 20 elementos, y las cargas posteriores son de 10)
+- Mostrar tareas en grillas cuando la propiedad `visualizationType`
+  en Remote Config es `grid`. Por defecto, se muestra en lista
+- Eliminar tareas
+- Asignar múltiples categorías a tareas
+- Marcar tareas como completadas
+- Filtrar tareas por categoría
+
 ## Configuración
 
 Para poder configurar la aplicación, se deben reemplazar
