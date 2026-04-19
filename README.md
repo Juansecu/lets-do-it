@@ -7,6 +7,8 @@ App para administrar tareas.
 ### Desarrollo
 
 - **[Node.js](https://nodejs.org/en/) -** Versión 24.x o superior
+- **[Android Studio](https://developer.android.com/studio/index.html)** - para compilar la aplicación para dispositivos móviles Android
+- Xcode para compilar la aplicación para dispositivos móviles iOS
 - Emulador o dispositivo móvil Android/IOS
   para testear la aplicación de manera nativa
 - Variable de entorno `ANDROID_HOME` configurada
@@ -111,9 +113,34 @@ las siguientes propiedades pueden ser configuradas en Remote Config:
 |---------------------|--------|---------------------------------------------------------------------------------------------------------------------|
 | `visualizationType` | String | El modo en el que se visualizarán las páginas de tareas y categorías. El único valor útil en este momento es `grid` |
 
+## Compilar Aplicación
+
+### Android
+
+Para compilar la aplicación para dispositivos móviles Android,
+es necesario realizar los siguientes pasos:
+
+1. Compilar la aplicación utilizando el comando
+   (`npx ionic cap sync` para utilizar configuración de desarrollo,
+   y `npx ionic cap sync --prod` para utilizar configuración de producción)
+2. Abrir Android Studio y utilizar las opciones
+   **Build > Generate App Bundles or APKs**
+
+Una vez que el proceso de compilación termine,
+se puede dar clic en el botón **Play** para correr la aplicación
+en un emulador o dispositivo móvil Android previamente configurado.
+
 ## Correr Aplicación
 
 ### Desarrollo
 
 Para correr la aplicación en entornos de desarrollo,
-se debe utilizar el comando `ionic cap run android -l --external`.
+es necesario realizar los siguientes pasos:
+
+1. Compilar la aplicación utilizando el comando `npm run build`
+2. Utilizar el comando `npx ionic cap run android -l --external`
+   para correr la aplicación en un emulador o dispositivo móvil Android,
+   o `npx ionic cap run ios` para correr la aplicación en un dispositivo iOS
+3. Cuando la utilidad lo pregunte, se debe seleccionar el dispositivo
+   en el cual se quiera correr la aplicación, y posteriormente la dirección
+   IP a utilizar
